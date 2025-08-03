@@ -67,15 +67,15 @@ const VideoActionDetection: React.FC<VideoActionDetectionProps> = () => {
   return (
     <div className="max-w-7xl animate-fade-in">
       {/* Header */}
-      <div className="mb-6">
-        <div className="bg-white rounded-lg p-4 card-shadow">
+      <div className="mb-4 sm:mb-6">
+        <div className="bg-white rounded-lg p-4 sm:p-6 card-shadow">
           <div className="flex items-center">
-            <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
-              <span className="text-purple-600 text-lg">🎬</span>
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-3 sm:mr-4 flex-shrink-0">
+              <span className="text-purple-600 text-lg sm:text-xl">🎬</span>
             </div>
-            <div>
-              <h1 className="text-xl font-bold text-gray-900">Video Action Detection</h1>
-              <p className="text-gray-600 text-sm">
+            <div className="min-w-0 flex-1">
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Video Action Detection</h1>
+              <p className="text-gray-600 text-sm sm:text-base mt-1">
                 Upload a video and detect specific actions using natural language
               </p>
             </div>
@@ -83,11 +83,11 @@ const VideoActionDetection: React.FC<VideoActionDetectionProps> = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Input Panel */}
-        <div className="xl:col-span-1 space-y-4">
+        <div className="lg:col-span-1 space-y-4">
           {/* Video Upload */}
-          <div className="bg-white rounded-lg p-4 card-shadow">
+          <div className="bg-white rounded-lg p-4 sm:p-6 card-shadow">
             <h3 className="text-base font-semibold text-gray-900 mb-3">Video Upload</h3>
             
             <div className="mb-3">

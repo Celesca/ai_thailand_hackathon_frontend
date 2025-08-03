@@ -21,26 +21,26 @@ const VideoDetectionCard: React.FC<VideoDetectionCardProps> = ({ detection, inde
   };
 
   return (
-    <div className="border border-gray-200 rounded-lg p-3 animate-fade-in">
+    <div className="border border-gray-200 rounded-lg p-3 sm:p-4 animate-fade-in">
       <div className="flex items-start justify-between mb-2">
         <div className="flex items-center">
-          <div className="w-6 h-6 bg-purple-100 rounded-md flex items-center justify-center mr-2">
+          <div className="w-6 h-6 sm:w-7 sm:h-7 bg-purple-100 rounded-md flex items-center justify-center mr-2 flex-shrink-0">
             <span className="text-purple-600 text-xs font-semibold">#{index + 1}</span>
           </div>
-          <div>
+          <div className="min-w-0">
             <h4 className="font-semibold text-gray-900 text-sm">Frame {detection.frame_idx}</h4>
             <p className="text-gray-500 text-xs">@ {formatTimestamp(detection.timestamp)}</p>
           </div>
         </div>
         
-        <div className={`px-2 py-1 rounded-full text-xs font-medium ${getConfidenceColor(detection.confidence)}`}>
+        <div className={`px-2 py-1 rounded-full text-xs font-medium flex-shrink-0 ${getConfidenceColor(detection.confidence)}`}>
           {Math.round(detection.confidence * 100)}%
         </div>
       </div>
 
       {/* Description */}
       <div className="mb-2">
-        <p className="text-xs text-gray-700 italic">"{detection.blip_description}"</p>
+        <p className="text-xs sm:text-sm text-gray-700 italic leading-relaxed">"{detection.blip_description}"</p>
       </div>
 
       {/* Similarity Scores */}
