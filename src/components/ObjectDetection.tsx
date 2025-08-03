@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { DetectionRequest, DetectionResponse } from '../types/detection';
 import { detectObjects, detectObjectsFromFile } from '../api/detection';
 import DetectionCard from './DetectionCard';
+import ErrorNotification from './ErrorNotification';
 // Temporarily disabled: import DemoData from './DemoData';
 
 interface ObjectDetectionProps {}
@@ -445,6 +446,12 @@ const ObjectDetection: React.FC<ObjectDetectionProps> = () => {
           </div>
         </div>
       </div>
+      
+      {/* Error Notification */}
+      <ErrorNotification 
+        error={error} 
+        onClose={() => setError(null)} 
+      />
     </div>
   );
 };

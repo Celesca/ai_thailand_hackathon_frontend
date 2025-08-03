@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { VideoActionResponse } from '../types/videoAction';
 import { detectVideoAction } from '../api/videoAction';
 import VideoDetectionCard from './VideoDetectionCard';
+import ErrorNotification from './ErrorNotification';
 
 interface VideoActionDetectionProps {}
 
@@ -408,6 +409,12 @@ const VideoActionDetection: React.FC<VideoActionDetectionProps> = () => {
           )}
         </div>
       </div>
+      
+      {/* Error Notification */}
+      <ErrorNotification 
+        error={error} 
+        onClose={() => setError(null)} 
+      />
     </div>
   );
 };
