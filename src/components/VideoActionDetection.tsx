@@ -291,27 +291,25 @@ const VideoActionDetection: React.FC<VideoActionDetectionProps> = () => {
                 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
                   <div className="text-center p-3 bg-blue-50 rounded-lg">
-                    <div className="text-2xl font-bold text-blue-600">{result.stats.total_detections}</div>
-                    <div className="text-xs text-blue-800">Total Detections</div>
+                    <div className="text-2xl font-bold text-blue-600">{result.video_duration.toFixed(1)}s</div>
+                    <div className="text-xs text-blue-800">Video Duration</div>
                   </div>
                   <div className="text-center p-3 bg-green-50 rounded-lg">
-                    <div className="text-2xl font-bold text-green-600">{result.stats.passed_detections}</div>
-                    <div className="text-xs text-green-800">Passed Detections</div>
+                    <div className="text-2xl font-bold text-green-600">{result.stats.total_frames}</div>
+                    <div className="text-xs text-green-800">Total Frames</div>
                   </div>
                   <div className="text-center p-3 bg-purple-50 rounded-lg">
-                    <div className="text-2xl font-bold text-purple-600">{result.stats.success_rate.toFixed(1)}%</div>
-                    <div className="text-xs text-purple-800">Success Rate</div>
+                    <div className="text-2xl font-bold text-purple-600">{result.stats.segments_found}</div>
+                    <div className="text-xs text-purple-800">Segments Found</div>
                   </div>
                   <div className="text-center p-3 bg-orange-50 rounded-lg">
-                    <div className="text-2xl font-bold text-orange-600">{result.stats.segments_found}</div>
-                    <div className="text-xs text-orange-800">Segments Found</div>
+                    <div className="text-xl font-bold text-orange-600 truncate">{result.action_verb}</div>
+                    <div className="text-xs text-orange-800">Action Verb</div>
                   </div>
                 </div>
 
                 <div className="text-sm text-gray-600">
                   <p><strong>Job ID:</strong> {result.job_id}</p>
-                  <p><strong>Action Verb:</strong> {result.action_verb}</p>
-                  <p><strong>Video Duration:</strong> {result.video_duration.toFixed(2)}s</p>
                 </div>
               </div>
 
