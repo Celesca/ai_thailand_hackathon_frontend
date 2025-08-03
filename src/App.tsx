@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Sidebar from './components/Sidebar'
 import ObjectDetection from './components/ObjectDetection'
+import VideoActionDetection from './components/VideoActionDetection'
 import './App.css'
 
 function App() {
@@ -10,6 +11,8 @@ function App() {
     switch (activeFunction) {
       case 'object-detection':
         return <ObjectDetection />
+      case 'video-action':
+        return <VideoActionDetection />
       default:
         return <ObjectDetection />
     }
@@ -23,7 +26,7 @@ function App() {
           onFunctionChange={setActiveFunction} 
         />
         <main className="flex-1 ml-64">
-          <div className="p-6">
+          <div className="p-4">
             {renderActiveComponent()}
           </div>
         </main>

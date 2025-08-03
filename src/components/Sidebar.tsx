@@ -14,6 +14,12 @@ const Sidebar: React.FC<SidebarProps> = ({ activeFunction, onFunctionChange }) =
       description: 'Zero-shot detection with natural language'
     },
     {
+      id: 'video-action',
+      name: 'Video Action Detection',
+      icon: '🎬',
+      description: 'Detect actions in video sequences'
+    },
+    {
       id: 'coming-soon',
       name: 'More Features',
       icon: '✨',
@@ -27,11 +33,11 @@ const Sidebar: React.FC<SidebarProps> = ({ activeFunction, onFunctionChange }) =
       <div className="p-6 border-b border-gray-100">
         <div className="flex items-center">
           <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
-            <span className="text-purple-600 font-bold text-sm">AI</span>
+            <span className="text-purple-600 text-lg">🎯</span>
           </div>
           <div>
-            <h1 className="text-lg font-semibold text-gray-900">AI Platform</h1>
-            <p className="text-gray-500 text-xs">Object Detection</p>
+            <h1 className="text-lg font-sm text-black">DAMZ</h1>
+            <p className="text-gray-500 text-xs">Detection & Analysis</p>
           </div>
         </div>
       </div>
