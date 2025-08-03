@@ -3,9 +3,16 @@ import React from 'react';
 interface SidebarProps {
   activeFunction: string;
   onFunctionChange: (func: string) => void;
+  isOpen?: boolean;
+  onToggle?: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ activeFunction, onFunctionChange }) => {
+const Sidebar: React.FC<SidebarProps> = ({ 
+  activeFunction, 
+  onFunctionChange, 
+  isOpen = true, 
+  onToggle 
+}) => {
   const functions = [
     {
       id: 'object-detection',
@@ -28,7 +35,21 @@ const Sidebar: React.FC<SidebarProps> = ({ activeFunction, onFunctionChange }) =
   ];
 
   return (
-    <div className="w-64 h-screen fixed left-0 top-0 bg-white border-r border-gray-200">
+    <div className={`w-64 h-screen fixed left-0 top-0 bg-white border-r border-gray-200 z-50 transform transition-transform duration-300 ease-in-out ${
+      isOpen ? 'translate-x-0' : '-translate-x-full'
+    } lg:translate-x-0`}>
+      {/* Mobile close button */}
+      <div className="lg:hidden absolute top-4 right-4">
+        <button
+          onClick={onToggle}
+          className="p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      
       {/* Header */}
       <div className="p-6 border-b border-gray-100">
         <div className="flex items-center">
@@ -48,18 +69,24 @@ const Sidebar: React.FC<SidebarProps> = ({ activeFunction, onFunctionChange }) =
           {functions.map((func) => (
             <button
               key={func.id}
-              onClick={() => onFunctionChange(func.id)}
-              className={`w-full text-left p-3 rounded-lg transition-all duration-200 ${
+              onClick={() => {
+                onFunctionChange(func.id);
+                // Close sidebar on mobile after selection
+                if (onToggle && window.innerWidth < 1024) {
+                  onToggle();
+                }
+              }}
+              className={`w-full text-left p-4 rounded-lg transition-all duration-200 touch-manipulation ${
                 activeFunction === func.id
                   ? 'bg-purple-50 text-purple-700 border border-purple-200'
                   : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
               }`}
             >
               <div className="flex items-start">
-                <span className="text-lg mr-3">{func.icon}</span>
-                <div>
+                <span className="text-lg mr-3 flex-shrink-0">{func.icon}</span>
+                <div className="min-w-0 flex-1">
                   <div className="font-medium text-sm">{func.name}</div>
-                  <div className="text-xs opacity-75 mt-1">{func.description}</div>
+                  <div className="text-xs opacity-75 mt-1 leading-relaxed">{func.description}</div>
                 </div>
               </div>
             </button>

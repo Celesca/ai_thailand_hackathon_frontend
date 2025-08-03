@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { DetectionRequest, DetectionResponse } from '../types/detection';
 import { detectObjects, detectObjectsFromFile } from '../api/detection';
 import DetectionCard from './DetectionCard';
+import ErrorNotification from './ErrorNotification';
 // Temporarily disabled: import DemoData from './DemoData';
 
 interface ObjectDetectionProps {}
@@ -114,15 +115,15 @@ const ObjectDetection: React.FC<ObjectDetectionProps> = () => {
   return (
     <div className="max-w-7xl animate-fade-in">
       {/* Header */}
-      <div className="mb-8">
-        <div className="bg-white rounded-lg p-6 card-shadow">
+      <div className="mb-6 lg:mb-8">
+        <div className="bg-white rounded-lg p-4 sm:p-6 card-shadow">
           <div className="flex items-center">
-            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
-              <span className="text-purple-600 text-xl">🎯</span>
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-3 sm:mr-4 flex-shrink-0">
+              <span className="text-purple-600 text-lg sm:text-xl">🎯</span>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Zero-Shot Object Detection</h1>
-              <p className="text-gray-600 mt-1">
+            <div className="min-w-0 flex-1">
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Zero-Shot Object Detection</h1>
+              <p className="text-gray-600 mt-1 text-sm sm:text-base">
                 Upload an image and describe what objects you want to detect
               </p>
             </div>
@@ -130,11 +131,11 @@ const ObjectDetection: React.FC<ObjectDetectionProps> = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6">
         {/* Input Panel */}
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {/* Image Input */}
-          <div className="bg-white rounded-lg p-6 card-shadow">
+          <div className="bg-white rounded-lg p-4 sm:p-6 card-shadow">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Image Input</h3>
             
             {/* File Upload */}
@@ -149,10 +150,10 @@ const ObjectDetection: React.FC<ObjectDetectionProps> = () => {
                   onChange={handleFileUpload}
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 />
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-purple-400 transition-colors">
-                  <div className="text-gray-400 text-2xl mb-2">📁</div>
-                  <p className="text-gray-600 font-medium">Click to upload an image</p>
-                  <p className="text-gray-500 text-sm">or drag and drop your file here</p>
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 sm:p-6 text-center hover:border-purple-400 transition-colors">
+                  <div className="text-gray-400 text-xl sm:text-2xl mb-2">📁</div>
+                  <p className="text-gray-600 font-medium text-sm sm:text-base">Click to upload an image</p>
+                  <p className="text-gray-500 text-xs sm:text-sm">or drag and drop your file here</p>
                 </div>
               </div>
             </div>
@@ -174,13 +175,13 @@ const ObjectDetection: React.FC<ObjectDetectionProps> = () => {
                 value={imageUrl}
                 onChange={(e) => handleUrlChange(e.target.value)}
                 placeholder="https://example.com/image.jpg"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               />
             </div>
           </div>
 
           {/* Text Queries */}
-          <div className="bg-white rounded-lg p-6 card-shadow">
+          <div className="bg-white rounded-lg p-4 sm:p-6 card-shadow">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Detection Queries</h3>
             
             <div className="space-y-3">
@@ -191,12 +192,12 @@ const ObjectDetection: React.FC<ObjectDetectionProps> = () => {
                     value={query}
                     onChange={(e) => updateTextQuery(index, e.target.value)}
                     placeholder="e.g., a cat, a person, a car"
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="flex-1 px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   />
                   {textQueries.length > 1 && (
                     <button
                       onClick={() => removeTextQuery(index)}
-                      className="px-3 py-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                      className="px-3 py-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0 touch-manipulation"
                     >
                       ×
                     </button>
@@ -207,17 +208,17 @@ const ObjectDetection: React.FC<ObjectDetectionProps> = () => {
             
             <button
               onClick={addTextQuery}
-              className="mt-3 px-4 py-2 text-purple-600 hover:bg-purple-50 rounded-lg text-sm font-medium transition-colors"
+              className="mt-3 px-4 py-2 text-purple-600 hover:bg-purple-50 rounded-lg text-sm font-medium transition-colors touch-manipulation"
             >
               + Add Query
             </button>
           </div>
 
           {/* Settings */}
-          <div className="bg-white rounded-lg p-6 card-shadow">
+          <div className="bg-white rounded-lg p-4 sm:p-6 card-shadow">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Settings</h3>
             
-            <div className="space-y-4">
+            <div className="space-y-4 sm:space-y-6">
               <div>
                 <div className="flex justify-between items-center mb-2">
                   <label className="text-sm font-medium text-gray-700">Box Threshold</label>
@@ -230,7 +231,7 @@ const ObjectDetection: React.FC<ObjectDetectionProps> = () => {
                   step="0.1"
                   value={boxThreshold}
                   onChange={(e) => setBoxThreshold(parseFloat(e.target.value))}
-                  className="w-full slider"
+                  className="w-full slider touch-manipulation"
                 />
               </div>
               
@@ -246,7 +247,7 @@ const ObjectDetection: React.FC<ObjectDetectionProps> = () => {
                   step="0.1"
                   value={textThreshold}
                   onChange={(e) => setTextThreshold(parseFloat(e.target.value))}
-                  className="w-full slider"
+                  className="w-full slider touch-manipulation"
                 />
               </div>
               
@@ -260,7 +261,7 @@ const ObjectDetection: React.FC<ObjectDetectionProps> = () => {
                   max="10"
                   value={priority}
                   onChange={(e) => setPriority(parseInt(e.target.value))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 />
               </div>
             </div>
@@ -270,7 +271,7 @@ const ObjectDetection: React.FC<ObjectDetectionProps> = () => {
           <button
             onClick={handleGenerate}
             disabled={isLoading}
-            className={`w-full py-3 px-6 rounded-lg font-semibold transition-all duration-200 ${
+            className={`w-full py-3 px-6 rounded-lg font-semibold transition-all duration-200 touch-manipulation ${
               isLoading
                 ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 : 'bg-white hover:bg-gray-50 text-black border-2 border-purple-600 card-shadow'
@@ -288,16 +289,16 @@ const ObjectDetection: React.FC<ObjectDetectionProps> = () => {
         </div>
 
         {/* Results Panel */}
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {/* Preview Image */}
           {imageUrl && (
-            <div className="bg-white rounded-lg p-6 card-shadow">
+            <div className="bg-white rounded-lg p-4 sm:p-6 card-shadow">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Input Image</h3>
               <div className="border border-gray-200 rounded-lg overflow-hidden">
                 <img
                   src={imageUrl}
                   alt="Input"
-                  className="w-full h-auto"
+                  className="w-full h-auto max-h-96 object-contain"
                   style={{ maxHeight: '300px', objectFit: 'contain' }}
                 />
               </div>
@@ -445,6 +446,12 @@ const ObjectDetection: React.FC<ObjectDetectionProps> = () => {
           </div>
         </div>
       </div>
+      
+      {/* Error Notification */}
+      <ErrorNotification 
+        error={error} 
+        onClose={() => setError(null)} 
+      />
     </div>
   );
 };
