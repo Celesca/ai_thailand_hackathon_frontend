@@ -19,3 +19,37 @@ export const detectObjects = async (request: DetectionRequest): Promise<Detectio
 
   return response.json();
 };
+
+export const detectObjectsFromFile = async (
+  file: File,
+  textQueries: string[],
+  boxThreshold: number,
+  textThreshold: number,
+  priority: number
+): Promise<DetectionResponse> => {
+  const formData = new FormData();
+  formData.append('file', file);
+  
+  // Add each text query as a separate field
+  textQueries.forEach(query => {
+    formData.append('text_queries', query);
+  });
+  
+  formData.append('box_threshold', boxThreshold.toString());
+  formData.append('text_threshold', textThreshold.toString());
+  formData.append('return_visualization', 'true');
+  formData.append('async_processing', 'false');
+  formData.append('priority', priority.toString());
+
+  const response = await fetch(`${API_BASE_URL}/detect/upload`, {
+    method: 'POST',
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
+  }
+
+  return response.json();
+};

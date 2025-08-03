@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import type { DetectionRequest, DetectionResponse } from '../types/detection';
-import { detectObjects } from '../api/detection';
+import { detectObjects, detectObjectsFromFile } from '../api/detection';
 import DetectionCard from './DetectionCard';
 // Temporarily disabled: import DemoData from './DemoData';
 
@@ -8,6 +8,7 @@ interface ObjectDetectionProps {}
 
 const ObjectDetection: React.FC<ObjectDetectionProps> = () => {
   const [imageUrl, setImageUrl] = useState('');
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [textQueries, setTextQueries] = useState(['a cat', 'a remote control', 'a person']);
   const [boxThreshold, setBoxThreshold] = useState(0.4);
   const [textThreshold, setTextThreshold] = useState(0.4);
@@ -19,6 +20,10 @@ const ObjectDetection: React.FC<ObjectDetectionProps> = () => {
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      setUploadedFile(file);
+      setImageUrl(''); // Clear URL when file is uploaded
+      
+      // Create preview URL for display
       const reader = new FileReader();
       reader.onload = (e) => {
         const result = e.target?.result as string;
@@ -26,6 +31,11 @@ const ObjectDetection: React.FC<ObjectDetectionProps> = () => {
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleUrlChange = (url: string) => {
+    setImageUrl(url);
+    setUploadedFile(null); // Clear uploaded file when URL is entered
   };
 
   const addTextQuery = () => {
@@ -44,8 +54,16 @@ const ObjectDetection: React.FC<ObjectDetectionProps> = () => {
     }
   };
 
+  const loadDemoImage = (url: string, queries: string[]) => {
+    setImageUrl(url);
+    setUploadedFile(null); // Clear uploaded file when demo image is loaded
+    setTextQueries(queries);
+    setResult(null);
+    setError(null);
+  };
+
   const handleGenerate = async () => {
-    if (!imageUrl) {
+    if (!imageUrl && !uploadedFile) {
       setError('Please provide an image URL or upload an image');
       return;
     }
@@ -59,18 +77,32 @@ const ObjectDetection: React.FC<ObjectDetectionProps> = () => {
     setError(null);
     setResult(null);
 
-    const requestBody: DetectionRequest = {
-      image_url: imageUrl,
-      text_queries: textQueries.filter(q => q.trim()),
-      box_threshold: boxThreshold,
-      text_threshold: textThreshold,
-      return_visualization: true,
-      async_processing: false,
-      priority: priority
-    };
-
     try {
-      const data = await detectObjects(requestBody);
+      let data: DetectionResponse;
+      
+      if (uploadedFile) {
+        // Use file upload API for uploaded files
+        data = await detectObjectsFromFile(
+          uploadedFile,
+          textQueries.filter(q => q.trim()),
+          boxThreshold,
+          textThreshold,
+          priority
+        );
+      } else {
+        // Use URL-based API for image URLs
+        const requestBody: DetectionRequest = {
+          image_url: imageUrl,
+          text_queries: textQueries.filter(q => q.trim()),
+          box_threshold: boxThreshold,
+          text_threshold: textThreshold,
+          return_visualization: true,
+          async_processing: false,
+          priority: priority
+        };
+        data = await detectObjects(requestBody);
+      }
+      
       setResult(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred during detection');
@@ -140,7 +172,7 @@ const ObjectDetection: React.FC<ObjectDetectionProps> = () => {
               <input
                 type="url"
                 value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
+                onChange={(e) => handleUrlChange(e.target.value)}
                 placeholder="https://example.com/image.jpg"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               />
@@ -366,7 +398,7 @@ const ObjectDetection: React.FC<ObjectDetectionProps> = () => {
             
             <div className="space-y-4">
               <div className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors cursor-pointer"
-                   onClick={() => setImageUrl('https://images.unsplash.com/photo-1606567595334-d39972c85dbe')}>
+                   onClick={() => loadDemoImage('https://images.unsplash.com/photo-1606567595334-d39972c85dbe', ['a cat', 'a dog'])}>
                 <div className="flex gap-4">
                   <img
                     src="https://images.unsplash.com/photo-1606567595334-d39972c85dbe"
@@ -385,19 +417,20 @@ const ObjectDetection: React.FC<ObjectDetectionProps> = () => {
               </div>
               
               <div className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors cursor-pointer"
-                   onClick={() => setImageUrl('https://images.unsplash.com/photo-1449824913935-59a10b8d2000')}>
+                   onClick={() => loadDemoImage('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Mangoes_%28Magnifera_indica%29_from_India.jpg/1200px-Mangoes_%28Magnifera_indica%29_from_India.jpg', ['green mango', 'rotten mango', 'devil fruit'])}>
                 <div className="flex gap-4">
                   <img
-                    src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000"
-                    alt="Urban Scene"
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Mangoes_%28Magnifera_indica%29_from_India.jpg/1200px-Mangoes_%28Magnifera_indica%29_from_India.jpg"
+                    alt="Mangoes"
                     className="w-16 h-16 object-cover rounded-lg border border-gray-200"
                   />
                   <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900 text-sm mb-1">Urban Scene</h4>
-                    <p className="text-gray-600 text-xs mb-2">Great for vehicles, buildings, and people</p>
+                    <h4 className="font-semibold text-gray-900 text-sm mb-1">Mangoes</h4>
+                    <p className="text-gray-600 text-xs mb-2">Perfect for detecting different types of mangoes</p>
                     <div className="flex flex-wrap gap-1">
-                      <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full">a car</span>
-                      <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full">a person</span>
+                      <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full">green mango</span>
+                      <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full">rotten mango</span>
+                      <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full">devil fruit</span>
                     </div>
                   </div>
                 </div>
