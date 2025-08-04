@@ -418,7 +418,7 @@ const ObjectDetection: React.FC<ObjectDetectionProps> = () => {
               </div>
               
               <div className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors cursor-pointer"
-                   onClick={() => loadDemoImage('https://images.unsplash.com/photo-1449824913935-59a10b8d2000', ['traffic light', 'a man with red shirt', 'yellow car'])}>
+                   onClick={() => loadDemoImage('https://images.unsplash.com/photo-1449824913935-59a10b8d2000', ['traffic light', 'ผู้ชายใส่เสื้อสีแดง', 'yellow car'])}>
                 <div className="flex gap-4">
                   <img
                     src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000"
