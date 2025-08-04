@@ -418,6 +418,26 @@ const ObjectDetection: React.FC<ObjectDetectionProps> = () => {
               </div>
               
               <div className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors cursor-pointer"
+                   onClick={() => loadDemoImage('https://images.unsplash.com/photo-1449824913935-59a10b8d2000', ['traffic light', 'a man with red shirt', 'yellow car'])}>
+                <div className="flex gap-4">
+                  <img
+                    src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000"
+                    alt="City Traffic Scene"
+                    className="w-16 h-16 object-cover rounded-lg border border-gray-200"
+                  />
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-gray-900 text-sm mb-1">City Traffic Scene</h4>
+                    <p className="text-gray-600 text-xs mb-2">Urban scene with vehicles, people, and traffic infrastructure</p>
+                    <div className="flex flex-wrap gap-1">
+                      <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full">traffic light</span>
+                      <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full">a man with red shirt</span>
+                      <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full">yellow car</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors cursor-pointer"
                    onClick={() => loadDemoImage('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Mangoes_%28Magnifera_indica%29_from_India.jpg/1200px-Mangoes_%28Magnifera_indica%29_from_India.jpg', ['green mango', 'rotten mango', 'devil fruit'])}>
                 <div className="flex gap-4">
                   <img
